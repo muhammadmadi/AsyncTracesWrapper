@@ -9,8 +9,14 @@ public class AsyncTracesWrapper : ModuleRules
 			new string[] {
 				"Core",
 				"CoreUObject",
-				"Engine",
-				"GameplayTags"
+				"Engine"
+			}
+		);
+
+		PrivateDependencyModuleNames.AddRange(
+			new string[] {
+				"Slate",
+				"SlateCore"
 			}
 		);
 	}

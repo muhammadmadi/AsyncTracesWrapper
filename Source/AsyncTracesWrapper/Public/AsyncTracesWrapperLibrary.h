@@ -1,13 +1,12 @@
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Engine/EngineTypes.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "AsyncTracesWrapperLibrary.generated.h"
 
-
-DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAsyncLineTraceSingleResultDelegate, bool, bBlockingHit, FVector, ImpactPoint,
-                                     FHitResult, HitResult);
+DECLARE_DYNAMIC_DELEGATE_ThreeParams(FAsyncLineTraceDelegate, bool, bHit, FVector, ImpactPoint, FHitResult, HitResult);
 
 UCLASS()
 class ASYNCTRACESWRAPPER_API UAsyncTracesWrapperLibrary : public UBlueprintFunctionLibrary
@@ -16,7 +15,7 @@ class ASYNCTRACESWRAPPER_API UAsyncTracesWrapperLibrary : public UBlueprintFunct
 
 public:
     /** Perform an asynchronous line trace using the specified channel. */
-    UFUNCTION(BlueprintCallable, Category = "AsyncTracesWrapper", meta = (WorldContext = "WorldContextObject"))
+    UFUNCTION(BlueprintCallable, Category = "AsyncTracesWrapperLibrary", meta = (WorldContext = "WorldContextObject"))
     static void AsyncLineTraceByChannel(
         UObject* WorldContextObject,
         FVector Start,
@@ -25,6 +24,6 @@ public:
         bool bTraceComplex,
         const TArray<AActor*>& ActorsToIgnore,
         EDrawDebugTrace::Type DrawDebugType,
-        FAsyncLineTraceSingleResultDelegate Callback
+        FAsyncLineTraceDelegate OnComplete
     );
 };
