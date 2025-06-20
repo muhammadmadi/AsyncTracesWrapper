@@ -1,8 +1,8 @@
-#include "AsyncTraceLibrary.h"
+#include "AsyncTracesWrapperLibrary.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 
-void UAsyncTraceLibrary::AsyncLineTraceByChannel(
+void UAsyncTracesWrapperLibrary::AsyncLineTraceByChannel(
     UObject* WorldContextObject,
     FVector Start,
     FVector End,
@@ -20,24 +20,31 @@ void UAsyncTraceLibrary::AsyncLineTraceByChannel(
     FCollisionQueryParams Params(SCENE_QUERY_STAT(AsyncLineTrace), bTraceComplex);
     Params.AddIgnoredActors(ActorsToIgnore);
 
-    FTraceDelegate Delegate = FTraceDelegate::CreateLambda(
-        [Callback](const FTraceHandle&, FTraceDatum& Datum)
+    // Create a heap-allocated delegate to avoid dangling pointer issues
+    FTraceDelegate* HeapDelegate = new FTraceDelegate();
+    *HeapDelegate = FTraceDelegate::CreateLambda(
+        [Callback, HeapDelegate](const FTraceHandle&, FTraceDatum& Datum)
         {
             bool bHit = Datum.OutHits.Num() > 0 && Datum.OutHits[0].bBlockingHit;
             FVector Impact = bHit ? Datum.OutHits[0].ImpactPoint : FVector::ZeroVector;
             FHitResult Hit = bHit ? Datum.OutHits[0] : FHitResult();
+
+            // Execute the callback
             Callback.ExecuteIfBound(bHit, Impact, Hit);
+
+            // Clean up the heap-allocated delegate
+            delete HeapDelegate;
         }
     );
 
     World->AsyncLineTraceByChannel(
-        EAsyncTraceType::Single,                                         // Correct trace type
+        EAsyncTraceType::Single,
         Start,
         End,
         UEngineTypes::ConvertToCollisionChannel(TraceChannel),
         Params,
         FCollisionResponseParams::DefaultResponseParam,
-        &Delegate,                                                       // Pointer to static delegate
-        0                                                                
+        HeapDelegate,  // Use heap-allocated delegate
+        0
     );
 }
