@@ -16,7 +16,7 @@ class ASYNCTRACESWRAPPER_API UAsyncTracesWrapperLibrary : public UBlueprintFunct
 
 public:
     /** Perform an asynchronous line trace using the specified channel. */
-    UFUNCTION(BlueprintCallable, Category = "Async Trace", meta = (WorldContext = "WorldContextObject", BlueprintInternalUseOnly = "true"))
+    UFUNCTION(BlueprintCallable, Category = "AsyncTracesWrapper", meta = (WorldContext = "WorldContextObject"))
     static void AsyncLineTraceByChannel(
         UObject* WorldContextObject,
         FVector Start,
