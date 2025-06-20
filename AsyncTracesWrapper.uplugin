@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Async Traces Wrapper",
+	"Description": "Expose AsyncLineTraceByChannel to Blueprints at runtime.",
+	"Category": "Utilities",
+	"Modules": [
+		{
+			"Name": "AsyncTracesWrapper",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"EnabledByDefault": true
+}

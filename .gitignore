@@ -1,0 +1,41 @@
+# Unreal Engine 5 Generated Files
+/[Bb]uild/
+/[Bb]uilds/
+/Binaries/
+/DerivedDataCache/
+/Intermediate/
+/Saved/
+
+# Config can be versioned, but avoid local overrides
+!/Config/*
+# Keep metadata
+!.vscode/settings.json
+
+# Visual Studio / IDE
+.vs/
+*.vcxproj*
+*.sln
+*.user
+*.suo
+*.userosscache
+*.VC.db
+*.opendb
+*.opensdf
+*.sdf
+
+# Rider
+.idea/
+
+# MacOS System
+.DS_Store
+
+# Misc binary caches
+*.log
+*.tlog
+*.obj
+*.cache
+*.pdb
+
+# Ignore archives
+*.zip
+*.rar
